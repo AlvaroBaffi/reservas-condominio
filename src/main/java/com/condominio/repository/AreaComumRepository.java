@@ -1,0 +1,112 @@
+package com.condominio.repository;
+
+import com.condominio.config.DatabaseConnection;
+import com.condominio.model.AreaComum;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * Repositório responsável pelas operações de banco de dados da entidade AreaComum.
+ */
+public class AreaComumRepository {
+
+    /**
+     * Insere uma nova área comum no banco.
+     */
+    public AreaComum criar(AreaComum area) throws SQLException {
+        String sql = "INSERT INTO areas_comuns (nome) VALUES (?)";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            ps.setString(1, area.getNome());
+            ps.executeUpdate();
+
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    area.setId(rs.getInt(1));
+                }
+            }
+        }
+        return area;
+    }
+
+    /**
+     * Lista todas as áreas comuns cadastradas.
+     */
+    public List<AreaComum> listarTodas() throws SQLException {
+        String sql = "SELECT * FROM areas_comuns ORDER BY nome";
+        List<AreaComum> lista = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                lista.add(mapear(rs));
+            }
+        }
+        return lista;
+    }
+
+    /**
+     * Busca uma área comum pelo ID.
+     */
+    public Optional<AreaComum> buscarPorId(int id) throws SQLException {
+        String sql = "SELECT * FROM areas_comuns WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(mapear(rs));
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Atualiza os dados de uma área comum.
+     */
+    public void atualizar(AreaComum area) throws SQLException {
+        String sql = "UPDATE areas_comuns SET nome = ? WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, area.getNome());
+            ps.setInt(2, area.getId());
+            ps.executeUpdate();
+        }
+    }
+
+    /**
+     * Remove uma área comum pelo ID.
+     */
+    public boolean remover(int id) throws SQLException {
+        String sql = "DELETE FROM areas_comuns WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        }
+    }
+
+    // ======================== Método auxiliar ========================
+
+    private AreaComum mapear(ResultSet rs) throws SQLException {
+        AreaComum a = new AreaComum();
+        a.setId(rs.getInt("id"));
+        a.setNome(rs.getString("nome"));
+        return a;
+    }
+}
