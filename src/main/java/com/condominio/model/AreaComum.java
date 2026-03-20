@@ -18,6 +18,7 @@ public class AreaComum {
     }
 
     public AreaComum(String nome) {
+
         this.nome = nome;
     }
 
