@@ -54,10 +54,7 @@ public class AreaComumController {
     private void cadastrar() {
         try {
             System.out.println("\n--- Cadastrar Área Comum ---");
-            System.out.print("Nome da área: ");
-            String nome = scanner.nextLine().trim();
-
-            AreaComum area = new AreaComum(nome);
+            AreaComum area =preencherAreaComum(new AreaComum());
             area = service.cadastrar(area);
             System.out.println("Área comum cadastrada com sucesso! ID: " + area.getId());
         } catch (IllegalArgumentException | SQLException e) {
@@ -138,6 +135,10 @@ public class AreaComumController {
     // ======================== Métodos auxiliares ========================
     //cria metodo auxiliar para o usuario preencher o campo via terminal
     private AreaComum preencherAreaComum(AreaComum area){
+        System.out.print("Nome da área: ");
+        String nome = scanner.nextLine().trim();
+        area.setNome(nome);
+
         if(lerBoolean("Possui capacidade máxima? (S/N): ")){
             System.out.println("Informe a capacidade maxima (S/N):");
             area.setCapacidadeMaxima(lerInteiro());
