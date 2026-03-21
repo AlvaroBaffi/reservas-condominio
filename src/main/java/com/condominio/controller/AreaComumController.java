@@ -138,7 +138,10 @@ public class AreaComumController {
     // ======================== Métodos auxiliares ========================
     //cria metodo auxiliar para o usuario preencher o campo via terminal
     private AreaComum preencherAreaComum(AreaComum area){
-        System.out.println("Deseja cadastrar uma capacidade maxima para a sua area? (S/N):");
+        if(lerBoolean("Possui capacidade máxima? (S/N): ")){
+            System.out.println("Informe a capacidade maxima (S/N):");
+            area.setCapacidadeMaxima(lerInteiro());
+        }
         return area;
     }
     private boolean lerBoolean(String mensagem) {
