@@ -135,4 +135,11 @@ public class AreaComumController {
             return -1;
         }
     }
+    // ======================== Métodos auxiliares ========================
+    //cria metodo auxiliar para o usuario preencher o campo via terminal
+    private AreaComum preencherAreaComum(AreaComum area){
+        System.out.println("Deseja cadastrar uma capacidade maxima para a sua area? (S/N):");
+        return area;
+    }
+
 }
