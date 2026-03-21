@@ -101,6 +101,7 @@ public class AreaComumController {
             if (!nome.isEmpty()) {
                 area.setNome(nome);
             }
+            area = lerCapacidadeOpicional(area);
 
             service.atualizar(area);
             System.out.println("Área comum atualizada com sucesso!");
@@ -138,10 +139,16 @@ public class AreaComumController {
         System.out.print("Nome da área: ");
         String nome = scanner.nextLine().trim();
         area.setNome(nome);
+        area = lerCapacidadeOpicional(area);
+        return area;
+    }
 
+    private AreaComum lerCapacidadeOpicional(AreaComum area){
         if(lerBoolean("Possui capacidade máxima? (S/N): ")){
-            System.out.println("Informe a capacidade maxima (S/N):");
+            System.out.println("Informe a capacidade maxima:");
             area.setCapacidadeMaxima(lerInteiro());
+        }else {
+            area.setCapacidadeMaxima(0);
         }
         return area;
     }
