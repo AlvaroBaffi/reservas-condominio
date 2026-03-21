@@ -141,5 +141,10 @@ public class AreaComumController {
         System.out.println("Deseja cadastrar uma capacidade maxima para a sua area? (S/N):");
         return area;
     }
+    private boolean lerBoolean(String mensagem) {
+        System.out.print(mensagem);
+        String entrada = scanner.nextLine().trim().toUpperCase();
+        return entrada.equals("S");
+    }
 
 }
