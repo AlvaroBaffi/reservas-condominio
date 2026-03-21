@@ -13,18 +13,15 @@ public class AreaComum {
     public AreaComum() {
     }
 
-    public AreaComum(int id, String nome) {
+    public AreaComum(int id, String nome, int capacidadeMaxima) {
         this.id = id;
         this.nome = nome;
+        this.capacidadeMaxima = capacidadeMaxima; //usuario pode escolher se a area cadastrada vai ter uma capacidade maximo. Por exemplo: Salão de festas - capacidade maxima: 400 pessoas
     }
 
     public AreaComum(String nome) {
 
         this.nome = nome;
-    }
-    //usuario pode escolher se a area cadastrada vai ter uma capacidade maximo. Por exemplo: Salão de festas - capacidade maxima: 400 pessoas
-    public AreaComum(int capacidadeMaxima){
-        this.capacidadeMaxima = capacidadeMaxima;
     }
 
     // ======================== Getters e Setters ========================
@@ -55,6 +52,6 @@ public class AreaComum {
 
     @Override
     public String toString() {
-        return String.format("ID: %d | Nome: %s", id, nome);
+        return String.format("ID: %d | Nome: %s | CapacidadeMaxima: %d", id, nome, capacidadeMaxima);
     }
 }
