@@ -14,7 +14,7 @@ public class DatabaseConnection {
     private static final String PORT = "3306";
     private static final String DATABASE = "condominio_db";
     private static final String USER = "root";
-    private static final String PASSWORD = "root";
+    private static final String PASSWORD = "Xboxone360@";
 
     private static final String URL = String.format(
             "jdbc:mysql://%s:%s/%s?useSSL=false&serverTimezone=America/Sao_Paulo&allowPublicKeyRetrieval=true",
