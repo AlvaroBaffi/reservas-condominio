@@ -106,13 +106,13 @@ public class CondominioController {
     private Condominio preencherCondominio(Condominio cond) {
         System.out.println("Para cada dia, informe se é BLOQUEADO para reservas (S/N):");
 
-        cond.setDom(lerBoolean("Domingo bloqueado? (S/N): "));
-        cond.setSeg(lerBoolean("Segunda bloqueada? (S/N): "));
-        cond.setTer(lerBoolean("Terça bloqueada? (S/N): "));
-        cond.setQua(lerBoolean("Quarta bloqueada? (S/N): "));
-        cond.setQui(lerBoolean("Quinta bloqueada? (S/N): "));
-        cond.setSex(lerBoolean("Sexta bloqueada? (S/N): "));
-        cond.setSab(lerBoolean("Sábado bloqueado? (S/N): "));
+        cond.setDom(lerBoolean("Domingo bloqueado?:"));
+        cond.setSeg(lerBoolean("Segunda bloqueada?:"));
+        cond.setTer(lerBoolean("Terça bloqueada?:"));
+        cond.setQua(lerBoolean("Quarta bloqueada?:"));
+        cond.setQui(lerBoolean("Quinta bloqueada?:"));
+        cond.setSex(lerBoolean("Sexta bloqueada?:"));
+        cond.setSab(lerBoolean("Sábado bloqueado?:"));
 
         System.out.println("\nPara os dias NÃO bloqueados, informe o horário mínimo de reserva (HH:MM).");
         System.out.println("Deixe em branco para não ter restrição de horário.\n");
@@ -129,9 +129,18 @@ public class CondominioController {
     }
 
     private boolean lerBoolean(String mensagem) {
-        System.out.print(mensagem);
-        String entrada = scanner.nextLine().trim().toUpperCase();
-        return entrada.equals("S");
+        while (true) {
+            System.out.print(mensagem + " (S/N): ");
+            String entrada = scanner.nextLine().trim().toUpperCase();
+
+            if (entrada.equals("S")) {
+                return true;
+            } else if (entrada.equals("N")) {
+                return false;
+            } else {
+                System.out.println("Entrada inválida! Digite apenas S ou N.");
+            }
+        }
     }
 
     private LocalTime lerHorarioOpcional(String mensagem) {
