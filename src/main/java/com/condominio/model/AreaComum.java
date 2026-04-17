@@ -8,16 +8,19 @@ public class AreaComum {
 
     private int id;
     private String nome;
+    private int capacidadeMaxima;
 
     public AreaComum() {
     }
 
-    public AreaComum(int id, String nome) {
+    public AreaComum(int id, String nome, int capacidadeMaxima) {
         this.id = id;
         this.nome = nome;
+        this.capacidadeMaxima = capacidadeMaxima; //usuario pode escolher se a area cadastrada vai ter uma capacidade maximo. Por exemplo: Salão de festas - capacidade maxima: 400 pessoas
     }
 
     public AreaComum(String nome) {
+
         this.nome = nome;
     }
 
@@ -39,8 +42,16 @@ public class AreaComum {
         this.nome = nome;
     }
 
+    public int getCapacidadeMaxima() {
+        return capacidadeMaxima;
+    }
+
+    public void setCapacidadeMaxima(int capacidadeMaxima) {
+        this.capacidadeMaxima = capacidadeMaxima;
+    }
+
     @Override
     public String toString() {
-        return String.format("ID: %d | Nome: %s", id, nome);
+        return String.format("ID: %d | Nome: %s | CapacidadeMaxima: %d", id, nome, capacidadeMaxima);
     }
 }

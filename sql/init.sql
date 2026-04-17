@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS moradores (
 CREATE TABLE IF NOT EXISTS areas_comuns (
     id   INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(150) NOT NULL,
+    capacidade_maxima INT,
     INDEX idx_areas_comuns_nome (nome)
 ) ENGINE=InnoDB;
 
