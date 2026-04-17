@@ -111,6 +111,7 @@ public class AreaComumController {
             if (!nome.isEmpty()) {
                 area.setNome(nome);
             }
+            area = lerCapacidadeOpicional(area);
 
             System.out.print("Nova lotação máxima (Enter para manter '" + area.getLotacaoMaxima() + "'): ");
             String lotacaoStr = scanner.nextLine().trim();
@@ -153,4 +154,29 @@ public class AreaComumController {
             return -1;
         }
     }
+    // ======================== Métodos auxiliares ========================
+    //cria metodo auxiliar para o usuario preencher o campo via terminal
+    private AreaComum preencherAreaComum(AreaComum area){
+        System.out.print("Nome da área: ");
+        String nome = scanner.nextLine().trim();
+        area.setNome(nome);
+        area = lerCapacidadeOpicional(area);
+        return area;
+    }
+
+    private AreaComum lerCapacidadeOpicional(AreaComum area){
+        if(lerBoolean("Possui capacidade máxima? (S/N): ")){
+            System.out.println("Informe a capacidade maxima:");
+            area.setCapacidadeMaxima(lerInteiro());
+        }else {
+            area.setCapacidadeMaxima(0);
+        }
+        return area;
+    }
+    private boolean lerBoolean(String mensagem) {
+        System.out.print(mensagem);
+        String entrada = scanner.nextLine().trim().toUpperCase();
+        return entrada.equals("S");
+    }
+
 }

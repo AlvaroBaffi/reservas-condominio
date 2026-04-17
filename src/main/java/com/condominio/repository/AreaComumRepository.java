@@ -39,7 +39,7 @@ public class AreaComumRepository {
      * Lista todas as áreas comuns cadastradas.
      */
     public List<AreaComum> listarTodas() throws SQLException {
-        String sql = "SELECT * FROM areas_comuns ORDER BY nome";
+        String sql = "SELECT * FROM areas_comuns ORDER BY nome, capacidade_maxima"; //adiciona capacidade maxima ao fazer consulta na hora de listar
         List<AreaComum> lista = new ArrayList<>();
 
         try (Connection conn = DatabaseConnection.getConnection();
