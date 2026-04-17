@@ -1,8 +1,11 @@
 package com.condominio.service;
 
 import com.condominio.model.Condominio;
+import com.condominio.model.Convidado;
+import com.condominio.model.Morador;
 import com.condominio.model.Reserva;
 import com.condominio.repository.AreaComumRepository;
+import com.condominio.repository.ConvidadoRepository;
 import com.condominio.repository.MoradorRepository;
 import com.condominio.repository.ReservaRepository;
 
@@ -22,12 +25,14 @@ public class ReservaService {
     private final ReservaRepository reservaRepository;
     private final MoradorRepository moradorRepository;
     private final AreaComumRepository areaComumRepository;
+    private final ConvidadoRepository convidadoRepository;
     private final CondominioService condominioService;
 
     public ReservaService() {
         this.reservaRepository = new ReservaRepository();
         this.moradorRepository = new MoradorRepository();
         this.areaComumRepository = new AreaComumRepository();
+        this.convidadoRepository = new ConvidadoRepository();
         this.condominioService = new CondominioService();
     }
 
@@ -42,7 +47,8 @@ public class ReservaService {
      */
     public Reserva registrar(Reserva reserva) throws SQLException {
         // Validar se morador existe
-        if (moradorRepository.buscarPorId(reserva.getMoradorId()).isEmpty()) {
+        Optional<Morador> moradorOpt = moradorRepository.buscarPorId(reserva.getMoradorId());
+        if (moradorOpt.isEmpty()) {
             throw new IllegalArgumentException("Morador com ID " + reserva.getMoradorId() + " não encontrado.");
         }
 
@@ -66,7 +72,25 @@ public class ReservaService {
             );
         }
 
-        return reservaRepository.criar(reserva);
+        Reserva reservaCriada = reservaRepository.criar(reserva);
+
+        // Registrar automaticamente todos os moradores do apartamento como convidados
+        Morador moradorResponsavel = moradorOpt.get();
+        List<Morador> moradoresApartamento = moradorRepository.buscarPorApartamento(moradorResponsavel.getNumeroApartamento());
+
+        int registrados = 0;
+        for (Morador m : moradoresApartamento) {
+            Convidado convidado = new Convidado(reservaCriada.getId(), m.getNome(), m.getCpf(), m.getRg());
+            convidadoRepository.criar(convidado);
+            registrados++;
+        }
+
+        if (registrados > 0) {
+            System.out.println(registrados + " morador(es) do apartamento " + moradorResponsavel.getNumeroApartamento()
+                    + " registrado(s) automaticamente como convidado(s).");
+        }
+
+        return reservaCriada;
     }
 
     /**

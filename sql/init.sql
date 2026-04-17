@@ -40,8 +40,11 @@ CREATE TABLE IF NOT EXISTS condominio (
 CREATE TABLE IF NOT EXISTS moradores (
     id                  INT AUTO_INCREMENT PRIMARY KEY,
     nome                VARCHAR(150) NOT NULL,
+    cpf                 VARCHAR(14)  NOT NULL,
+    rg                  VARCHAR(20)  NOT NULL,
     numero_apartamento  VARCHAR(20)  NOT NULL,
-    INDEX idx_moradores_nome (nome)
+    INDEX idx_moradores_nome (nome),
+    INDEX idx_moradores_apartamento (numero_apartamento)
 ) ENGINE=InnoDB;
 
 -- ============================================================
@@ -49,8 +52,10 @@ CREATE TABLE IF NOT EXISTS moradores (
 -- Cadastro das áreas comuns disponíveis para reserva.
 -- ============================================================
 CREATE TABLE IF NOT EXISTS areas_comuns (
-    id   INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(150) NOT NULL,
+    id              INT AUTO_INCREMENT PRIMARY KEY,
+    nome            VARCHAR(150) NOT NULL,
+    lotacao_maxima  INT          NOT NULL DEFAULT 0,
+    
     INDEX idx_areas_comuns_nome (nome)
 ) ENGINE=InnoDB;
 
@@ -74,4 +79,20 @@ CREATE TABLE IF NOT EXISTS reservas (
     INDEX idx_reserva_area (area_comum_id),
     INDEX idx_reserva_morador (morador_id),
     UNIQUE INDEX idx_reserva_unica (area_comum_id, data_reserva, horario_reserva)
+) ENGINE=InnoDB;
+
+-- ============================================================
+-- Tabela: convidados
+-- Registro dos convidados vinculados a uma reserva.
+-- ============================================================
+CREATE TABLE IF NOT EXISTS convidados (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    reserva_id  INT          NOT NULL,
+    nome        VARCHAR(150) NOT NULL,
+    cpf         VARCHAR(14)  NOT NULL,
+    rg          VARCHAR(20)  NOT NULL,
+    CONSTRAINT fk_convidado_reserva
+        FOREIGN KEY (reserva_id) REFERENCES reservas(id)
+        ON DELETE CASCADE,
+    INDEX idx_convidado_reserva (reserva_id)
 ) ENGINE=InnoDB;

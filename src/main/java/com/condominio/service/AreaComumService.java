@@ -70,5 +70,8 @@ public class AreaComumService {
         if (area.getNome() == null || area.getNome().isBlank()) {
             throw new IllegalArgumentException("O nome da área comum é obrigatório.");
         }
+        if (area.getLotacaoMaxima() < 0) {
+            throw new IllegalArgumentException("A lotação máxima não pode ser negativa.");
+        }
     }
 }

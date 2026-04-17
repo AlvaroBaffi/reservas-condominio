@@ -3,6 +3,7 @@ package com.condominio;
 import com.condominio.config.DatabaseConnection;
 import com.condominio.controller.AreaComumController;
 import com.condominio.controller.CondominioController;
+import com.condominio.controller.ConvidadoController;
 import com.condominio.controller.MoradorController;
 import com.condominio.controller.ReservaController;
 
@@ -39,15 +40,17 @@ public class Main {
         MoradorController moradorCtrl = new MoradorController(scanner);
         AreaComumController areaComumCtrl = new AreaComumController(scanner);
         ReservaController reservaCtrl = new ReservaController(scanner);
+        ConvidadoController convidadoCtrl = new ConvidadoController(scanner);
 
         int opcao = -1;
-        while (opcao != 5) {
+        while (opcao != 6) {
             System.out.println("\n==================== MENU PRINCIPAL ====================");
             System.out.println("1 - Gerenciar Condomínio");
             System.out.println("2 - Gerenciar Moradores");
             System.out.println("3 - Gerenciar Áreas Comuns");
             System.out.println("4 - Gerenciar Reservas");
-            System.out.println("5 - Sair");
+            System.out.println("5 - Gerenciar Convidados");
+            System.out.println("6 - Sair");
             System.out.println("========================================================");
             System.out.print("Escolha uma opção: ");
 
@@ -62,7 +65,8 @@ public class Main {
                 case 2 -> moradorCtrl.exibirMenu();
                 case 3 -> areaComumCtrl.exibirMenu();
                 case 4 -> reservaCtrl.exibirMenu();
-                case 5 -> {
+                case 5 -> convidadoCtrl.exibirMenu();
+                case 6 -> {
                     System.out.println("\nEncerrando o sistema...");
                     DatabaseConnection.closeConnection();
                     System.out.println("Conexão encerrada. Até logo!");

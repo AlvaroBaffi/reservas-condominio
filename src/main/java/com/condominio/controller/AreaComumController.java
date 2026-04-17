@@ -57,7 +57,14 @@ public class AreaComumController {
             System.out.print("Nome da área: ");
             String nome = scanner.nextLine().trim();
 
-            AreaComum area = new AreaComum(nome);
+            System.out.print("Lotação máxima (0 = sem limite): ");
+            int lotacao = lerInteiro();
+            if (lotacao < 0) {
+                System.out.println("Lotação inválida.");
+                return;
+            }
+
+            AreaComum area = new AreaComum(nome, lotacao);
             area = service.cadastrar(area);
             System.out.println("Área comum cadastrada com sucesso! ID: " + area.getId());
         } catch (IllegalArgumentException | SQLException e) {
@@ -103,6 +110,17 @@ public class AreaComumController {
             String nome = scanner.nextLine().trim();
             if (!nome.isEmpty()) {
                 area.setNome(nome);
+            }
+
+            System.out.print("Nova lotação máxima (Enter para manter '" + area.getLotacaoMaxima() + "'): ");
+            String lotacaoStr = scanner.nextLine().trim();
+            if (!lotacaoStr.isEmpty()) {
+                try {
+                    area.setLotacaoMaxima(Integer.parseInt(lotacaoStr));
+                } catch (NumberFormatException e) {
+                    System.out.println("Valor inválido para lotação.");
+                    return;
+                }
             }
 
             service.atualizar(area);

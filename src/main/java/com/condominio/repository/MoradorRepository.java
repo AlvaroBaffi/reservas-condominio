@@ -17,13 +17,15 @@ public class MoradorRepository {
      * Insere um novo morador no banco.
      */
     public Morador criar(Morador morador) throws SQLException {
-        String sql = "INSERT INTO moradores (nome, numero_apartamento) VALUES (?, ?)";
+        String sql = "INSERT INTO moradores (nome, cpf, rg, numero_apartamento) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, morador.getNome());
-            ps.setString(2, morador.getNumeroApartamento());
+            ps.setString(2, morador.getCpf());
+            ps.setString(3, morador.getRg());
+            ps.setString(4, morador.getNumeroApartamento());
             ps.executeUpdate();
 
             try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -77,14 +79,16 @@ public class MoradorRepository {
      * Atualiza os dados de um morador.
      */
     public void atualizar(Morador morador) throws SQLException {
-        String sql = "UPDATE moradores SET nome = ?, numero_apartamento = ? WHERE id = ?";
+        String sql = "UPDATE moradores SET nome = ?, cpf = ?, rg = ?, numero_apartamento = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, morador.getNome());
-            ps.setString(2, morador.getNumeroApartamento());
-            ps.setInt(3, morador.getId());
+            ps.setString(2, morador.getCpf());
+            ps.setString(3, morador.getRg());
+            ps.setString(4, morador.getNumeroApartamento());
+            ps.setInt(5, morador.getId());
             ps.executeUpdate();
         }
     }
@@ -105,10 +109,33 @@ public class MoradorRepository {
 
     // ======================== Método auxiliar ========================
 
+    /**
+     * Busca moradores pelo número do apartamento.
+     */
+    public List<Morador> buscarPorApartamento(String numeroApartamento) throws SQLException {
+        String sql = "SELECT * FROM moradores WHERE numero_apartamento = ? ORDER BY nome";
+        List<Morador> lista = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, numeroApartamento);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(mapear(rs));
+                }
+            }
+        }
+        return lista;
+    }
+
     private Morador mapear(ResultSet rs) throws SQLException {
         Morador m = new Morador();
         m.setId(rs.getInt("id"));
         m.setNome(rs.getString("nome"));
+        m.setCpf(rs.getString("cpf"));
+        m.setRg(rs.getString("rg"));
         m.setNumeroApartamento(rs.getString("numero_apartamento"));
         return m;
     }

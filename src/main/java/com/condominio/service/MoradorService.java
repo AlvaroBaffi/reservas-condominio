@@ -70,6 +70,12 @@ public class MoradorService {
         if (morador.getNome() == null || morador.getNome().isBlank()) {
             throw new IllegalArgumentException("O nome do morador é obrigatório.");
         }
+        if (morador.getCpf() == null || morador.getCpf().isBlank()) {
+            throw new IllegalArgumentException("O CPF do morador é obrigatório.");
+        }
+        if (morador.getRg() == null || morador.getRg().isBlank()) {
+            throw new IllegalArgumentException("O RG do morador é obrigatório.");
+        }
         if (morador.getNumeroApartamento() == null || morador.getNumeroApartamento().isBlank()) {
             throw new IllegalArgumentException("O número do apartamento é obrigatório.");
         }

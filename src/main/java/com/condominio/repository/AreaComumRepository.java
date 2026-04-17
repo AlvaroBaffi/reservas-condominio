@@ -17,12 +17,13 @@ public class AreaComumRepository {
      * Insere uma nova área comum no banco.
      */
     public AreaComum criar(AreaComum area) throws SQLException {
-        String sql = "INSERT INTO areas_comuns (nome) VALUES (?)";
+        String sql = "INSERT INTO areas_comuns (nome, lotacao_maxima) VALUES (?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, area.getNome());
+            ps.setInt(2, area.getLotacaoMaxima());
             ps.executeUpdate();
 
             try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -76,13 +77,14 @@ public class AreaComumRepository {
      * Atualiza os dados de uma área comum.
      */
     public void atualizar(AreaComum area) throws SQLException {
-        String sql = "UPDATE areas_comuns SET nome = ? WHERE id = ?";
+        String sql = "UPDATE areas_comuns SET nome = ?, lotacao_maxima = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, area.getNome());
-            ps.setInt(2, area.getId());
+            ps.setInt(2, area.getLotacaoMaxima());
+            ps.setInt(3, area.getId());
             ps.executeUpdate();
         }
     }
@@ -107,6 +109,7 @@ public class AreaComumRepository {
         AreaComum a = new AreaComum();
         a.setId(rs.getInt("id"));
         a.setNome(rs.getString("nome"));
+        a.setLotacaoMaxima(rs.getInt("lotacao_maxima"));
         return a;
     }
 }

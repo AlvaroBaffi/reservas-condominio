@@ -58,10 +58,14 @@ public class MoradorController {
             System.out.println("\n--- Cadastrar Morador ---");
             System.out.print("Nome: ");
             String nome = scanner.nextLine().trim();
+            System.out.print("CPF: ");
+            String cpf = scanner.nextLine().trim();
+            System.out.print("RG: ");
+            String rg = scanner.nextLine().trim();
             System.out.print("Número do apartamento: ");
             String apartamento = scanner.nextLine().trim();
 
-            Morador morador = new Morador(nome, apartamento);
+            Morador morador = new Morador(nome, cpf, rg, apartamento);
             morador = service.cadastrar(morador);
             System.out.println("Morador cadastrado com sucesso! ID: " + morador.getId());
         } catch (IllegalArgumentException | SQLException e) {
@@ -126,6 +130,18 @@ public class MoradorController {
             String nome = scanner.nextLine().trim();
             if (!nome.isEmpty()) {
                 morador.setNome(nome);
+            }
+
+            System.out.print("Novo CPF (Enter para manter '" + morador.getCpf() + "'): ");
+            String cpf = scanner.nextLine().trim();
+            if (!cpf.isEmpty()) {
+                morador.setCpf(cpf);
+            }
+
+            System.out.print("Novo RG (Enter para manter '" + morador.getRg() + "'): ");
+            String rg = scanner.nextLine().trim();
+            if (!rg.isEmpty()) {
+                morador.setRg(rg);
             }
 
             System.out.print("Novo apartamento (Enter para manter '" + morador.getNumeroApartamento() + "'): ");
