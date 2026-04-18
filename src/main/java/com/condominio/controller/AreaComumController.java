@@ -167,9 +167,9 @@ public class AreaComumController {
     private AreaComum lerCapacidadeOpicional(AreaComum area){
         if(lerBoolean("Possui capacidade máxima? (S/N): ")){
             System.out.println("Informe a capacidade maxima:");
-            area.setCapacidadeMaxima(lerInteiro());
+            area.setLotacaoMaxima(lerInteiro());
         }else {
-            area.setCapacidadeMaxima(0);
+            area.setLotacaoMaxima(0);
         }
         return area;
     }
